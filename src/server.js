@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes.js';
 import transactionsRoutes from './routes/transactions.routes.js';
 
+import { validateUserLogged } from './middlewares/validateUserLogged.js';
+
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -14,6 +16,7 @@ server.use(cors(), json());
 
 // rotas
 server.use(authRoutes);
+server.use(validateUserLogged);
 server.use(transactionsRoutes);
 
 server.listen(PORT, () => {

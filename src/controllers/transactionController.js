@@ -4,23 +4,8 @@ import { ObjectId } from 'mongodb';
 import db from '../databases/mongo.js';
 
 export async function getTransactions(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-  if (!token) {
-    return res.sendStatus(401);
-  }
-
   try {
-    const session = await db.collection('sessions').findOne({ token });
-    if (!session) {
-      return res.sendStatus(401);
-    }
-
-    const user = await db.collection('users').findOne({ _id: session.userId });
-    if (!user) {
-      return res.sendStatus(401);
-    }
-    delete user.password;
+    const { user } = res.locals;
 
     const userId = new ObjectId(user._id);
 
@@ -42,11 +27,6 @@ export async function getTransactions(req, res) {
 
 export async function createTransaction(req, res) {
   const transaction = req.body;
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-  if (!token) {
-    return res.sendStatus(401);
-  }
 
   const { error } = createTransactionSchema.validate(transaction);
   if (error) {
@@ -55,16 +35,7 @@ export async function createTransaction(req, res) {
   }
 
   try {
-    const session = await db.collection('sessions').findOne({ token });
-    if (!session) {
-      return res.sendStatus(401);
-    }
-
-    const user = await db.collection('users').findOne({ _id: session.userId });
-    if (!user) {
-      return res.sendStatus(401);
-    }
-    delete user.password;
+    const { user } = res.locals;
 
     const transactionObject = {
       ...transaction,
