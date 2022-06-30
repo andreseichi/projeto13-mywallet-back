@@ -48,8 +48,6 @@ export async function loginUser(req, res) {
     return res.status(422).send(errorsMessageArray);
   }
 
-  // bcrypt.compareSync(password, passwordEncrypted);
-
   try {
     const usersCollection = db.collection('users');
     const userDB = await usersCollection.findOne({ email: user.email });
@@ -77,6 +75,23 @@ export async function loginUser(req, res) {
     } else {
       return res.status(404).send('E-mail ou senha incorretas');
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+}
+
+export async function logoutUser(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  try {
+    const sessionsCollection = db.collection('sessions');
+    await sessionsCollection.deleteOne({ token });
+    return res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
