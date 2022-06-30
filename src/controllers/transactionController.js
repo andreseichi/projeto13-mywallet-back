@@ -29,7 +29,11 @@ export async function getTransactions(req, res) {
       .find({ userId })
       .toArray();
 
-    return res.send(transactionsArray);
+    const transactionsArrayFiltered = transactionsArray.map(
+      ({ userId, ...transaction }) => transaction
+    );
+
+    return res.send(transactionsArrayFiltered);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
