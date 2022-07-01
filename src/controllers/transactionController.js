@@ -36,9 +36,11 @@ export async function createTransaction(req, res) {
 
   try {
     const { user } = res.locals;
+    const valueFormatted = Number(transaction.value.toFixed(2));
 
     const transactionObject = {
       ...transaction,
+      value: valueFormatted,
       userId: user._id,
       date: new Date(),
     };
