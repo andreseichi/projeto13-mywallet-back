@@ -71,7 +71,7 @@ export async function loginUser(req, res) {
       };
       await sessionsCollection.insertOne(sessionUser);
 
-      return res.send('token: ' + token);
+      return res.send({ token });
     } else {
       return res.status(404).send('E-mail ou senha incorretas');
     }
