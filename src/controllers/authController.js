@@ -67,11 +67,12 @@ export async function loginUser(req, res) {
       const token = uuid();
       const sessionUser = {
         userId: userDB._id,
+        name: userDB.name,
         token,
       };
       await sessionsCollection.insertOne(sessionUser);
 
-      return res.send({ token });
+      return res.send({ token, name: userDB.name });
     } else {
       return res.status(404).send('E-mail ou senha incorretas');
     }
