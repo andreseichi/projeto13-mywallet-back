@@ -74,7 +74,7 @@ export async function loginUser(req, res) {
 
       return res.send({ token, name: userDB.name });
     } else {
-      return res.status(404).send('E-mail ou senha incorretas');
+      return res.status(401).send('E-mail ou senha incorretas');
     }
   } catch (error) {
     console.log(error);
