@@ -20,5 +20,5 @@ server.use(validateUserLogged);
 server.use(transactionsRoutes);
 
 server.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
